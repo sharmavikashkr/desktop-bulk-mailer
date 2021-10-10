@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <title>Bulk Mailer</title>
+    <style>
+        body{
+            background-color: #eee;
+            margin: auto;
+        }
+        .center {
+            margin: auto;
+            margin-top: 10px;
+            width: 100%;
+            border-radius: 25px;
+            border-color: saddlebrown;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h2>Bulk Mailer</h2>
+        <form id="bulkMailerForm">
+            <div class="form-group">
+                <label for="workfolder">Email:</label>
+                <div>
+                    <input type="text" id="email" class="form-control" placeholder="Email" value="sharma.vikashkr@gmail.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="workfolder">Password</label>
+                <div>
+                    <input type="password" id="password" class="form-control" placeholder="Password" value="vikash0403">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="workfolder">Work Folder:</label>
+                <div>
+                    <input type="text" id="workfolder" class="form-control" placeholder="Work Folder" value="/Users/vikash/Desktop/bulk-mailer">
+                </div>
+            </div>
+            <h5 id="status" style="color: red;"></h5>
+            <button type="button" class="btn btn-success" id="processBulkMails">Start</button>
+        </form>
+    </div>
+    <script type="module" src="./index.js"></script>
+</body>
+</html>

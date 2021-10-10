@@ -1,0 +1,53 @@
+{
+  "name": "bulk-mailer",
+  "version": "1.0.0",
+  "description": "Bulk Mailer with electron JS",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "bulk-mailer",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "src/icon/win.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "installerIcon": "src/icon/win.ico",
+      "uninstallerIcon": "src/icon/win.ico",
+      "uninstallDisplayName": "bulk-mailer",
+      "license": "license.txt",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "extraFiles": [
+      {
+        "from": "resources/bin",
+        "to": "Resources/bin",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  },
+  "author": "Venkatesh Rajendran",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "exceljs": "^4.3.0",
+    "fs": "0.0.1-security",
+    "fs.promises": "^0.1.2",
+    "jquery": "^3.5.1",
+    "nodejs-nodemailer-outlook": "^1.2.4"
+  },
+  "devDependencies": {
+    "electron": "^10.4.7",
+    "electron-builder": "^22.14.4",
+    "electron-packager": "^15.4.0"
+  }
+}
