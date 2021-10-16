@@ -2,6 +2,7 @@ const $ = require('jquery');
 const ExcelJs = require('exceljs');
 const fs = require('fs.promises');
 var nodeoutlook = require('nodejs-nodemailer-outlook');
+const spawn = require( 'child_process' ).spawnSync;
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -42,7 +43,7 @@ $('#processBulkMails').on('click', async () => {
             $('#status').text('Processing distributor: ' + distributorName);
             await fs.appendFile(logFile, 'Processing distributor: ' + distributorName + '\n');
             const files = await fs.readdir(workFolder);
-            const distributorFiles = files.filter((f) => f.startsWith(distributorCode + ' '));
+            const distributorFiles = files.filter(f => f.startsWith(distributorCode + ' ')).forEach(f => f = workFolder + '\\' + f);
             await fs.appendFile(logFile, 'Appending files: ' + distributorFiles + ' for distributor: ' + distributorName + '\n');
             mailObj.files = distributorFiles;
             mailingist.push(mailObj);
@@ -51,7 +52,7 @@ $('#processBulkMails').on('click', async () => {
         
         for (const mailObj of mailingist) {
             $('#status').text('Sending Email: ' + JSON.stringify(mailObj, undefined, 4));
-            sendEmail(email, password, workFolder, mailObj);
+            sendEmailOutlookVbs(mailObj);
             await delay(5000);
         }
         $('#status').text('Finish');
@@ -63,10 +64,10 @@ $('#processBulkMails').on('click', async () => {
     }
 });
 
-function sendEmail(email, password, workFolder, mailObj) {
+function sendEmail(email, password, mailObj) {
     const attachments = [];
     for (const file of mailObj.files) {
-        attachments.push({ path: workFolder + '/' + file });
+        attachments.push({ file });
     }
     const mailingOptions = {
         auth: {
@@ -85,4 +86,11 @@ function sendEmail(email, password, workFolder, mailObj) {
     };
     console.log(mailingOptions);
     nodeoutlook.sendEmail(mailingOptions);
+}
+
+function sendEmailOutlookVbs(mailObj) {
+    vbs = spawn( 'cscript.exe', [ './send_mail.vbs', mailObj.to, mailObj.cc, mailObj.subject, mailObj.files.join() ] );
+    console.log( `stderr: ${vbs.stderr.toString()}` );
+    console.log( `stdout: ${vbs.stdout.toString()}` );
+    console.log( `status: ${vbs.status}` );
 }
